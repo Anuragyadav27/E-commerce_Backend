@@ -9,13 +9,19 @@ exports.createProduct = async (req, res) => {
     res.status(400).json(err);
   }
 };
+
 exports.fetchAllProducts = async (req, res) => {
   // filter = {"category":["smartphone","laptops"]}
   // sort = {_sort:"price",_order="desc"}
   // pagination = {_page:1,_limit=10}
   // TODO : we have to try with multiple category and brands after change in front-end
-  let query = Product.find({deleted:{$ne:true}});
-  let totalProductsQuery = Product.find({deleted:{$ne:true}});
+  let condition = {}
+  if(!req.query.admin){
+    condition.deleted = {$ne:true}
+  }
+ 
+  let query = Product.find(condition);
+  let totalProductsQuery = Product.find(condition);
 
   if (req.query.category) {
     query = query.find({ category: req.query.category });
@@ -46,6 +52,7 @@ exports.fetchAllProducts = async (req, res) => {
     res.status(400).json(err);
   }
 };
+
 exports.fetchProductById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -55,6 +62,7 @@ exports.fetchProductById = async (req, res) => {
     res.status(400).json(err);
   }
 };
+
 exports.updateProduct = async (req, res) => {
   const { id } = req.params;
   try {
