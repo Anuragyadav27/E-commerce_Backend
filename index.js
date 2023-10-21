@@ -21,6 +21,7 @@ const cartRouter = require("./routes/Cart");
 const ordersRouter = require("./routes/Order");
 const { User } = require("./model/User");
 const { isAuth, sanitizeUser, cookieExtractor } = require("./services/common");
+const path = require("path");
 
 console.log(process.env)
 
@@ -65,7 +66,7 @@ opts.secretOrKey = process.env.JWT_SECRET_KEY;
 
 //middleware
 
-server.use(express.static('build'))
+server.use(express.static(path.resolve(__dirname,'build')))
 server.use(cookieParser());
 server.use(
   session({
